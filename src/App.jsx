@@ -10,19 +10,22 @@ function App() {
   const [cartItems, setCartItems] = React.useState([]);
 
 
+
   useEffect(() => {
-    axios.get('https://cataas.com/api/cats?tags=cute&skip=0&limit=10')
-      .then((response) => setList(response.data))
+    axios.get('https://cataas.com/api/cats?tags=cute&skip=0&limit=10').then((response) => setList(response.data))
+    axios.get('https://644ec7154e86e9a4d80127b7.mockapi.io/cart').then(res => setCartItems(res.data))
   }, [])
 
   const removeCat = (id) => {
     setList(list.filter((item) => item._id !== id))
   }
   const removeFavoriteCat = (id) => {
+    axios.delete(`https://644ec7154e86e9a4d80127b7.mockapi.io/cart/${id}`)
     setCartItems(cartItems.filter((obj) => obj.cat._id !== id))
   }
 
   const onAddToCart = (cat) => {
+    axios.post('https://644ec7154e86e9a4d80127b7.mockapi.io/cart', cat)
     setCartItems(prev => [...prev, cat])
   }
 
